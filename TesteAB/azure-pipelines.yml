@@ -12,8 +12,8 @@ pool:
 steps:
 - task: Docker@2
   inputs:
-    containerRegistry: 'Azure Registry TDC'
-    repository: 'TDC Innovation'
+    containerRegistry: <SERVICE_CONNECTION_NAME>
+    repository: <REPOSITORY_NAME>
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: |
