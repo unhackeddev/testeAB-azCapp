@@ -5,6 +5,11 @@ VisualStudioVersion = 25.0.1705.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteAB", "TesteAB\TesteAB.csproj", "{D6B5DEE6-417C-4D04-8859-50435666E5CA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{88D14B53-CE98-4823-AB1E-E46486B7FA52}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

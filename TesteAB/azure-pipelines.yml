@@ -1,0 +1,48 @@
+﻿# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Azure Registry TDC'
+    repository: 'TDC Innovation'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildNumber)
+      latest
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: <SERVICE_CONNECTION_NAME>
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      #!/bin/bash
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az provider register --namespace Microsoft.App
+                  az containerapp revision set-mode \
+                    --name <CONTAINER_APP_NAME> \
+                    --resource-group <RESOURCE_GROUP_NAME> \
+                    --mode single
+                  az containerapp revision label remove \
+                    --name <CONTAINER_APP_NAME> \
+                    --resource-group <RESOURCE_GROUP_NAME> \ 
+                    --label teste-a
+                  az containerapp update \
+                    --name <CONTAINER_APP_NAME> \
+                    --resource-group <RESOURCE_GROUP_NAME> \
+                    --image crtdc.azurecr.io/tdcinnovation:'$(Build.BuildNumber)' \
+                    --revision-suffix a'$(Build.BuildId)' 
+                  az containerapp revision label add \
+                    --revision <CONTAINER_APP_NAME>--a'$(Build.BuildId)' \
+                    --resource-group <RESOURCE_GROUP_NAME> \
+                    --label teste-a
